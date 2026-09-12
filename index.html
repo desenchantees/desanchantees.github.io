@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chorale les Désanchanté.e.s</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Source+Serif+4:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1E2A38;
+    --paper:#F1E9D8;
+    --paper-dark:#E4D8BE;
+    --wine:#7A2E2E;
+    --gold:#A9823C;
+    --muted:#6B6355;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', serif;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;}
+
+  /* --- staff-line motif, the signature element --- */
+  .staff{
+    position:relative;
+    height:64px;
+    margin:0 auto;
+  }
+  .staff::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:repeating-linear-gradient(
+      to bottom,
+      var(--ink) 0,
+      var(--ink) 1px,
+      transparent 1px,
+      transparent 13px
+    );
+    opacity:0.55;
+  }
+  .staff.thin{height:36px;}
+  .staff.thin::before{opacity:0.28;}
+
+  header{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--paper-dark);
+  }
+  nav{
+    max-width:1080px;
+    margin:0 auto;
+    padding:18px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-size:1.3rem;
+    font-weight:600;
+    text-decoration:none;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .brand .note{color:var(--wine); font-size:1.1rem;}
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:28px;
+    margin:0;
+    padding:0;
+    font-size:0.95rem;
+  }
+  nav ul li a{text-decoration:none; opacity:0.8; transition:opacity .2s;}
+  nav ul li a:hover{opacity:1;}
+  .btn{
+    display:inline-block;
+    background:var(--wine);
+    color:var(--paper);
+    text-decoration:none;
+    padding:10px 20px;
+    border-radius:2px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    letter-spacing:0.03em;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 4px 14px rgba(122,46,46,0.3);}
+
+  /* --- hero --- */
+  .hero{
+    max-width:1080px;
+    margin:0 auto;
+    padding:80px 28px 60px;
+    text-align:center;
+  }
+  .hero .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--wine);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 4rem);
+    line-height:1.05;
+  }
+  .hero p.lede{
+    max-width:560px;
+    margin:22px auto 0;
+    color:var(--muted);
+    font-size:1.1rem;
+  }
+  .hero-logo{
+    display:block;
+    max-width:500px;
+    height:auto;
+    margin:28px auto 0;
+  }
+  .hero-actions{
+    margin-top:36px;
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .btn.outline{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--ink);
+  }
+
+  section{
+    max-width:1080px;
+    margin:0 auto;
+    padding:70px 28px;
+  }
+  section + section{border-top:1px solid var(--paper-dark);}
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:36px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .section-head h2{font-size:1.8rem;}
+  .section-head .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    color:var(--muted);
+  }
+
+  .about p{max-width:680px; color:var(--ink);}
+
+  .repertoire-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:2px;
+    background:var(--paper-dark);
+    border:1px solid var(--paper-dark);
+  }
+  .piece{
+    background:var(--paper);
+    padding:26px 22px;
+  }
+  .piece .num{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--gold);
+    font-size:0.85rem;
+  }
+  .piece h3{font-size:1.15rem; margin-top:8px;}
+  .piece .composer{color:var(--muted); font-size:0.95rem; margin-top:4px;}
+
+  .members-cta{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:4px;
+    padding:52px 40px;
+    text-align:center;
+  }
+  .members-cta h2{color:var(--paper); font-size:1.9rem;}
+  .members-cta p{color:#C9C0AC; max-width:480px; margin:14px auto 28px;}
+  .members-cta .btn{background:var(--gold); color:var(--ink);}
+
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:50px;
+  }
+  @media (max-width:720px){
+    .contact-grid{grid-template-columns:1fr;}
+    nav ul{display:none;}
+  }
+  .contact-grid dt{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--muted);
+    margin-top:18px;
+  }
+  .contact-grid dd{margin:4px 0 0; font-size:1.05rem;}
+
+  footer{
+    padding:36px 28px;
+    text-align:center;
+    color:var(--muted);
+    font-size:0.85rem;
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--wine);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="brand">Chorale les Désanchanté.e.s</a>
+    <ul>
+      <li><a href="#presentation">Présentation et inscriptions</a></li>
+      <li><a href="#actualites">Actualités</a></li>
+      <li><a href="#repertoire">Répertoire</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="membres.html" class="btn">Espace membres</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="staff" aria-hidden="true"></div>
+  <p class="eyebrow">Venez chanter ou nous écouter !</p>
+  <img src="img/LOGO-ENTIER-SANS-FOND_resize.png" alt="Logo Les Désenchanté.e.s" class="hero-logo">
+  <p class="lede">Un espace dédié à notre chorale les Désanchanté.e.s : présentation, actualités et un accès réservé aux membres pour retrouver partitions et enregistrements audio.</p>
+  <div class="hero-actions">
+    <a href="#repertoire" class="btn outline">Voir le répertoire</a>
+    <a href="membres.html" class="btn">Accéder à l'espace membres</a>
+  </div>
+</div>
+
+<section id="presentation" class="about">
+  <div class="section-head">
+    <h2>Qui sommes nous ?</h2>
+  </div>
+  <p>Les Désenchanté·es, c'est quoi ? C'est une chorale qui fait le choix de visibiliser des personnes minorisées en mettant à l'honneur un répertoire d'artistes femmes ou queers. Yoa, Mika, ABBA, Théodora, Kate Bush, Solann ou encore Billie Eilish, une sélection de chansons françaises ou internationales seront mises en valeur par les voix de tous·tes.</p>
+  <div class="section-head">
+    <h2>Qui peut nous rejoindre ?</h2>
+  </div>
+  <p>A l'instar de la chanson emblématique de Mylène Farmer, cette chorale s'adresse à toutes les générations désenchantées en quête de sens et de partage. Que tu sois concerné·e ou allié·e, c'est dans un espace qui se veut sécurisant, inclusif et bienveillant que tu pourras explorer ta voix, sous les conseils avisés de notre cheffe de chœur Zoé. Que tu sois débutant·e ou expérimenté·e, cet atelier est ouvert à toute personne qui aime chanter dans un cadre chaleureux et accueillant. </p>
+  <p>Pour celleux qui voudraient nous rejoindrent en tant que bénévoles, le prix d'adhésion est libre pour nous rejoindre en tant que bénévoles.</p>
+  <p>Si par contre vous souhaitez venir chanter avec nous, nous proposons un prix libre à partir de 50€. Cette chorale se voulant inclusive de tous les statuts sociaux, des tarifs adaptés seront appliqués selon les situations personnelles de chacun·e, donc nous vous invitons à nous contacter pour en discuter au besoin.</p>
+  <p>L'inscription, c'est <a href="https://forms.gle/787souWWuispCF5C6">ici</a> !</p>
+</section>
+
+<section id="actualites" class="about">
+  <div class="section-head">
+    <h2>Nos actus ! </h2>
+  </div>
+  <p>Nous n'avons pas encore de concerts prévus et nous sommes complets pour le premier semestre de 2026-2027, mais n'hésitez pas à vous inscrire pour être la file d'attente et pour être tenus au courant de nos actus : <a href="https://forms.gle/787souWWuispCF5C6">cliquez ici pour vous inscrire</a> !</p>
+</section>
+
+<section id="repertoire">
+  <div class="section-head">
+    <h2>Répertoire</h2>
+  </div>
+  <div class="repertoire-grid">
+    <div class="piece">
+      <div class="num mono">01</div>
+      <h3>Titre de l'œuvre</h3>
+      <div class="composer">Compositeur·rice</div>
+    </div>
+    <div class="piece">
+      <div class="num mono">02</div>
+      <h3>Titre de l'œuvre</h3>
+      <div class="composer">Compositeur·rice</div>
+    </div>
+    <div class="piece">
+      <div class="num mono">03</div>
+      <h3>Titre de l'œuvre</h3>
+      <div class="composer">Compositeur·rice</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="staff thin" aria-hidden="true"></div>
+  <div class="members-cta" style="margin-top:40px;">
+    <h2>Partitions et audios des membres</h2>
+    <p>Les fichiers de travail — partitions PDF et enregistrements audio — sont réservés aux membres de la chorale.</p>
+    <a href="membres.html" class="btn">Entrer dans l'espace membres</a>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-head">
+    <h2>Contact</h2>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <p>Une question, une envie de nous rejoindre, une invitation à jouer ? Écrivez-nous.</p>
+    </div>
+    <dl>
+      <dt>Email</dt>
+      <dd>choralelesdesenchante.e.s@gmail.com</dd>
+      <dt>Répétitions</dt>
+      <dd>Les lundi à 19h45, à l'Antipode (à partir du 14 septembre)</dd>
+      <dt>Instagram</dt>
+      <dd>@chorale.les.desenchante.e.s</dd>
+    </dl>
+  </div>
+</section>
+
+<footer>
+  Chorale les Désanchanté.e.s · <span id="year"></span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
